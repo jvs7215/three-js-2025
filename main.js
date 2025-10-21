@@ -3,46 +3,9 @@ import { OrbitControls } from 'https://cdn.skypack.dev/three@0.128.0/examples/js
 import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/loaders/GLTFLoader.js';
 
 
-// Orbit Control
-
-const controls = new OrbitControls(camera, renderer.domElement)
-
-
-/*import * as THREE from 'https://cdn.skypack.dev/three@0.128.0/build/three.module.js';
-import { OrbitControls } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/controls/OrbitControls.js';
-importr } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/loaders/GLTFLoader.js';
-*/
-/*
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
-
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
-
-*/
-setupCounter(document.querySelector('#counter'))
-
 
 // Setup
-
 const scene = new THREE.Scene();
-
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 
@@ -51,13 +14,14 @@ const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('#bg'),
 });
 
-renderer.render(scene, camera);
+
 
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 camera.position.setZ(50);
 camera.position.setX(-3);
-
+camera.position.setY(10);
+renderer.render(scene, camera);
 
 const geometry = new THREE.BoxGeometry(10, 10, 10);
 
@@ -76,6 +40,7 @@ cube.position.x = -15;
 cube.rotation.x = 2;
 cube.rotation.y = .5;
 
+const ico = new THREE.IcosahedronGeometry(15,1);
 const icoMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
 const icoMesh = new THREE.Mesh(ico, icoMaterial);
 
@@ -95,21 +60,10 @@ ambientLight.position.set(25, -15, -400);
 scene.add(pointLight);
 scene.add(ambientLight);
 
-const material = new THREE.MeshStandardMaterial( { color: 0xFF6347 } );
+//const material = new THREE.MeshStandardMaterial( { color: 0xFF6347 } );
 
-function animate() {
-    requestAnimationFrame( animate );
-    // slowly rotate the cube:
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
-    // rotate the icosahedron a little faster in the opposite direction:
-    icoMesh.rotation.z += -0.03
-    icoMesh.rotation.y += -0.03
 
-    renderer.render( scene, camera );
-}
 
-animate();
 
 // Helpers
 
@@ -121,29 +75,13 @@ const gridHelper = new THREE.GridHelper(200,50);
 
 scene.add(gridHelper)
 
-function animate() {
-    requestAnimationFrame( animate );
-    // slowly rotate the cube:
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
-    // rotate the icosahedron a little faster in the opposite direction:
-    icoMesh.rotation.z += -0.03
-    icoMesh.rotation.y += -0.03
-    // ALLOWS YOUR ORBIT CONTROLS TO UPDATE LIVE IN REAL-TIME:
-    controls.update()
 
-    renderer.render( scene, camera );
-}
 
 // Background
 
 const spaceTexture = new THREE.TextureLoader().load('images/night_sky.jpg')
 
 scene.background = spaceTexture;
-
-// Object texture mapping
-
-const smileTexture = new THREE.TextureLoader().load('images/smile.jpg')
 
 // Object texture mapping
 
@@ -157,21 +95,10 @@ const smileMesh = new THREE.Mesh(sphereGeometry, smileMaterial);
 
 scene.add(smileMesh);
 
+// Orbit Control
+const controls = new OrbitControls(camera, renderer.domElement)
 
-function animate() {
-    requestAnimationFrame( animate );
-    // slowly rotate the cube:
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
-    // rotate the icosahedron a little faster in the opposite direction:
-    icoMesh.rotation.z += -0.03
-    icoMesh.rotation.y += -0.03
-    // rotate the smiley sphere on the Y axis:
-    smileMesh.rotation.y += 0.05
-    controls.update()
 
-    renderer.render( scene, camera );
-}
 
 const normalTexture = new THREE.TextureLoader().load('images/normals/textureNormal.png');
 
@@ -189,3 +116,19 @@ const torusKnot = new THREE.Mesh( torusGeo, torusMaterial );
 scene.add( torusKnot );
 torusKnot.position.y = 20
 
+function animate() {
+    requestAnimationFrame( animate );
+    // slowly rotate the cube:
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
+    // rotate the icosahedron a little faster in the opposite direction:
+    icoMesh.rotation.z += -0.03
+    icoMesh.rotation.y += -0.03
+    // rotate the smiley sphere on the Y axis:
+    smileMesh.rotation.y += 0.05
+    controls.update()
+
+    renderer.render( scene, camera );
+}
+
+animate();
